@@ -15,7 +15,7 @@ class HappiViewMixin:
     def __init__(self, client: Optional[Client] = None, **kwargs):
         super().__init__(**kwargs)
         self._client = client
-        self._entries = []
+        self._entries: list[SearchResult] = []
 
     @property
     def client(self):
@@ -103,7 +103,7 @@ class HappiDeviceListView(HappiViewMixin, QtWidgets.QListView):
         for row, itm in enumerate(items):
             self._model.setItem(row, itm)
         self.proxy_model.setSourceModel(self._model)
-        self.proxy_model.sort(0, QtCore.Qt.AscendingOrder)
+        self.proxy_model.sort(0, QtCore.Qt.SortOrder.AscendingOrder)
 
 
 class HappiDeviceTreeView(HappiViewMixin, QtWidgets.QTreeView):
@@ -128,8 +128,8 @@ class HappiDeviceTreeView(HappiViewMixin, QtWidgets.QTreeView):
     ):
         super().__init__(parent=parent, client=client, **kwargs)
         self.setSortingEnabled(True)
-        self._models = dict()
-        self._groups = []
+        self._models: dict[str, QtGui.QStandardItemModel] = dict()
+        self._groups: list[str] = []
         self._active_group = ""
 
         self.proxy_model = QtCore.QSortFilterProxyModel()
